@@ -1,5 +1,9 @@
 const express = require("express");
 const controller = require("../../controllers/client/home.controller");
+
 const route = express.Router();
-route.get("", controller.index);
+
+// Dùng "/" rõ ràng để đảm bảo map đúng root
+route.get("/", controller.index);
+
 module.exports = route;
