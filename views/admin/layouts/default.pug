@@ -1,7 +1,8 @@
 doctype html
 html
   head
-    title #{pageTitle}
+    // Fallback để title không trống nếu chưa truyền pageTitle
+    title #{pageTitle || 'Admin'}
     link(
       rel="stylesheet",
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
