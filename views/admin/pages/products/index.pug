@@ -5,11 +5,30 @@ block main
   .card.mb-3
     .card-header Bộ lọc và Tìm kiếm
     .card-body
-      each item in filterStatus
-        button(
-          class=`btn btn-sm ml-1 btn-outline-success ${item.class}`
-          button-status=item.status
-        ) #{item.name}
+      .row
+        .col-6
+          each item in filterStatus
+            button(
+              class=`btn btn-sm ml-1 btn-outline-success ${item.class}`
+              button-status=item.status
+            ) #{item.name}
+        
+        .col-6
+            form(id="form-search")
+              .input-group
+                input(
+                  type="text"
+                  placeholder="Nhập từ khóa"
+                  name="keyword"
+                  class="form-control"
+                  value=keyword
+                )
+                .input-group-append
+                  button(
+                    class="btn btn-success"
+                    type="submit"
+
+                  ) Tìm
   .card.mb-3
     .card-header danh sach san pham
     .card-body
@@ -34,8 +53,8 @@ block main
                   alt=item.title
                   width="80"
                 )
-              td Sản phẩm 1
-              td 100$
+              td #{item.title}
+              td #{item.price}
               td
                 if (item.status == "active")
                   a(href="#" class="badge badge-success") Hoạt động
