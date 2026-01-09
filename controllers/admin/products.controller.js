@@ -2,7 +2,7 @@ const Products = require("../../models/product.model");
 const filterStatusHelper = require("../../helpers/filterStatus");
 const objectSearchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
-
+//[GET] /admin/products
 module.exports.products = async (req, res) => {
   //bộ lọc
   const filterStatus = filterStatusHelper(req.query);
@@ -46,4 +46,12 @@ module.exports.products = async (req, res) => {
     keyword: objectSearch.keyword,
     pagination: objectPagination,
   });
+};
+
+//[GET] /admin/products/change-status/:status/:id
+module.exports.changeStatus = async (req, res) => {
+  const status = req.params.status;
+  const id = req.params.id;
+  await Products.updateOne({ _id: id }, { status: status });
+  res.redirect(req.get("Referer"));
 };
