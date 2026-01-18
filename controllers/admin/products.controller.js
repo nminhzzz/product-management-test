@@ -48,10 +48,26 @@ module.exports.products = async (req, res) => {
   });
 };
 
-//[GET] /admin/products/change-status/:status/:id
+//[Patch] /admin/products/change-status/:status/:id;
 module.exports.changeStatus = async (req, res) => {
   const status = req.params.status;
   const id = req.params.id;
   await Products.updateOne({ _id: id }, { status: status });
+  res.redirect(req.get("Referer"));
+};
+//[GET] /admin/products/change-multi;
+
+module.exports.changeMulti = async (req, res) => {
+  const type = req.body.type;
+  const ids = req.body.ids.split(", ");
+
+  switch (type) {
+    case "active":
+      await Products.updateMany({ _id: { $in: ids } }, { status: "active" });
+      break;
+    case "inactive":
+      await Products.updateMany({ _id: { $in: ids } }, { status: "inactive" });
+      break;
+  }
   res.redirect(req.get("Referer"));
 };
