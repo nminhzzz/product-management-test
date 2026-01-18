@@ -55,7 +55,7 @@ module.exports.changeStatus = async (req, res) => {
   await Products.updateOne({ _id: id }, { status: status });
   res.redirect(req.get("Referer"));
 };
-//[GET] /admin/products/change-multi;
+//[patch] /admin/products/change-multi;
 
 module.exports.changeMulti = async (req, res) => {
   const type = req.body.type;
@@ -69,5 +69,11 @@ module.exports.changeMulti = async (req, res) => {
       await Products.updateMany({ _id: { $in: ids } }, { status: "inactive" });
       break;
   }
+  res.redirect(req.get("Referer"));
+};
+
+module.exports.delete = async (req, res) => {
+  const id = req.params.id;
+  await Products.deleteOne({ _id: id });
   res.redirect(req.get("Referer"));
 };
