@@ -1,5 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+
+const session = require("express-session");
+
+const flash = require("express-flash");
 
 const systemConfig = require("./config/system");
 var methodOverride = require("method-override");
@@ -19,6 +24,19 @@ database.connect();
 app.set("views", "./views");
 app.set("view engine", "pug");
 app.use(express.static("public"));
+
+//Flash
+// Flash
+app.use(cookieParser("keyboard cat"));
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60000 },
+  })
+);
+app.use(flash());
 
 // App local variable
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
