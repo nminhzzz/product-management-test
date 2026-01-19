@@ -7,8 +7,11 @@ mixin form-change-multi(path)
         .d-flex.align-items-start
           .form-group
             select.form-control(name="type")
+              option(disable) --chọn hành động--
               option(value="active") Hoạt động
               option(value="inactive") Dừng hoạt động
+              option(value="delete-all") Xoá tất cả
+
 
           .form-group
             input.form-control(

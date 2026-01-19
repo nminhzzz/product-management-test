@@ -59,6 +59,14 @@ if (formChangeMulti) {
       'input[name="id"]:checked'
     );
     const inputIds = document.querySelector(`input[name="ids"]`);
+
+    const typeChange = e.target.elements.type.value;
+    if (typeChange == "delete-all") {
+      const isConfirm = confirm("bạn có muốn xoá những sản phẩm này không");
+      if (!isConfirm) {
+        return;
+      }
+    }
     if (inputsChecked.length > 0) {
       let ids = [];
       inputsChecked.forEach((input) => {
