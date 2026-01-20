@@ -4,7 +4,8 @@ block main
   h1(class="mb-4") #{pageTitle}
 
   form(
-    action=`${prefixAdmin}/products/create`
+    action=`${prefixAdmin}/products/create `
+    enctype="multipart/form-data"
     id="form-create-product"
     method="POST"
   )
@@ -58,10 +59,11 @@ block main
     div(class="form-group")
       label(for="thumbnail") Ảnh
       input(
-        type="text"
-        class="form-control"
+        type="file"
+        class="form-control-file"
         id="thumbnail"
         name="thumbnail"
+        accept="image/*"
       )
     div(class="form-group")
       label(for="position") Vị trí
