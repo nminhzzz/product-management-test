@@ -7,6 +7,8 @@ const route = express.Router();
 route.get("/", controller.products);
 route.patch("/change-status/:status/:id", controller.changeStatus);
 route.delete("/delete/:id", controller.delete);
+route.get("/create", controller.create);
+route.post("/create", controller.createPost);
 
 route.patch("/change-multi", controller.changeMulti);
 

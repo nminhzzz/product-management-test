@@ -65,6 +65,8 @@ if (showAlert) {
   closeAlert.addEventListener("click", () => {
     showAlert.classList.add("alert-hidden");
   });
-  setTimeout(() => {}, time);
+  setTimeout(() => {
+    showAlert.classList.add("alert-hidden");
+  }, time);
 }
 //End Show alert

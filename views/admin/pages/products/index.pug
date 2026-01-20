@@ -23,61 +23,90 @@ block main
   .card.mb-3
     .card-header Danh sách
     .card-body
-      +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)      
+      .row
+        .col-8
+          +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`) 
+        .col-4 
+          a(href=`${prefixAdmin}/products/create`
+            class="btn btn-outline-success"
+            ) + Thêm mới 
+    
       
 
-  table(class="table table-hover table-sm" checkbox-multi)
-    thead
-      tr
-        th
-          input(type="checkbox" name="checkAll")
-        th STT
-        th Hình ảnh
-        th Tiêu đề
-        th Giá
-        th Vị trí 
-        th Trạng thái
-        th Hành động
+      table(
+        class="table table-hover table-sm"
+        checkbox-multi
+      )
+        thead
+          tr
+            th.text-center
+              input(type="checkbox" name="checkAll")
+            th.text-center STT
+            th.text-center Hình ảnh
+            th Tiêu đề
+            th.text-center Giá
+            th.text-center Vị trí
+            th.text-center Trạng thái
+            th.text-center Hành động
 
-    tbody
-      each item, index in products
-        tr
-          td
-            input(type="checkbox" name="id" value=item._id)
-          td #{index + 1}
-          td
-            img(
-              src=item.thumbnail
-              alt=item.title
-              width="80"
-            )
-          td #{item.title}
-          td #{item.price}$
-          td
-            input(
-            type="number"
-            value=item.position
-            style="width: 60px"
-            min="1"
-            name="position")
-          
-            if item.status == "active"
-              a.badge.badge-success(
-                href="javascript:;"
-                data-status=item.status
-                data-id=item.id
-                button-change-status
-              ) Hoạt động
-            else
-              a.badge.badge-danger(
-                href="javascript:;"
-                data-status=item.status
-                data-id=item.id
-                button-change-status
-              ) Dừng hoạt động
-          td
-            button.btn.btn-warning.btn-sm Sửa
-            button(class="btn btn-danger btn-sm" button-delete data-id=item._id) Xóa
+        tbody
+          each item, index in products
+            tr
+              td.text-center.align-middle
+                input(type="checkbox" name="id" value=item._id)
+              td.text-center.align-middle #{index + 1}
+              td.text-center.align-middle
+                img(
+                  src=item.thumbnail
+                  alt=item.title
+                  width="80px"
+                  height="auto"
+                  class="img-thumbnail"
+                )
+              td.align-middle
+                h6.mb-0 #{item.title}
+              td.text-center.align-middle
+                b #{item.price}$
+              td.text-center.align-middle
+                input(
+                  type="number"
+                  value=item.position
+                  style="width: 60px"
+                  min="1"
+                  name="position"
+                  class="form-control form-control-sm d-inline-block text-center"
+                )
+              td.text-center.align-middle
+                if item.status == "active"
+                  a(
+                    href="javascript:;"
+                    data-status=item.status
+                    data-id=item.id
+                    button-change-status
+                    class="badge badge-success"
+                  ) Hoạt động
+                else
+                  a(
+                    href="javascript:;"
+                    data-status=item.status
+                    data-id=item.id
+                    button-change-status
+                    class="badge badge-secondary"
+                  ) Dừng hoạt động
+              td.text-center.align-middle
+                a(
+                    href=`${prefixAdmin}/products/edit/${item.id}`
+                    class="btn btn-warning btn-sm mr-1"
+                    title="Sửa"
+                  )
+                    i.fas.fa-edit
+                button(
+                  class="btn btn-danger btn-sm"
+                  button-delete
+                  data-id=item.id
+                  title="Xóa"
+                )
+                  i.fas.fa-trash
 
   +pagination(pagination)
 
@@ -93,3 +122,4 @@ block main
     data-path=`${prefixAdmin}/products/delete`
   )
   script(src="/admin/js/product.js")
+

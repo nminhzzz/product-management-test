@@ -2,6 +2,8 @@ const Products = require("../../models/product.model");
 const filterStatusHelper = require("../../helpers/filterStatus");
 const objectSearchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
+const Product = require("../../models/product.model");
+const { prefixAdmin } = require("../../config/system");
 //[GET] /admin/products
 module.exports.products = async (req, res) => {
   //bộ lọc
@@ -104,4 +106,25 @@ module.exports.delete = async (req, res) => {
     { deleted: true, deleteAt: new Date() }
   );
   res.redirect(req.get("Referer"));
+};
+//[GET] /admin/products/create
+
+module.exports.create = async (req, res) => {
+  res.render("admin/pages/products/create", {
+    pageTitle: "Trang danh tạo  sản phẩm",
+  });
+};
+//[POST] /admin/products/create
+
+module.exports.createPost = async (req, res) => {
+  req.body.price = parseInt(req.body.price);
+  req.body.discountPercentage = parseInt(req.body.discountPercentage);
+  req.body.stock = parseInt(req.body.stock);
+  if (req.body.position == "") {
+    req.body.position = (await Product.countDocuments()) + 1;
+    console.log(req.body.position);
+  }
+  const product = new Product(req.body);
+  await product.save();
+  res.redirect(`${prefixAdmin}/products`);
 };
