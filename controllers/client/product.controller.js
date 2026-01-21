@@ -1,4 +1,3 @@
-const Product = require("../../models/product.model");
 module.exports.index = async (req, res) => {
   try {
     const products = await Product.find({
@@ -13,12 +12,14 @@ module.exports.index = async (req, res) => {
       ).toFixed(0);
       return item;
     });
+
     res.render("client/pages/products/index", { products: newProducts });
   } catch (error) {
-    console.log(error);
-    res.redirect("/");
+    console.error("INDEX ERROR:", error);
+    res.status(500).send("Lỗi server khi tải danh sách sản phẩm");
   }
 };
+
 module.exports.detail = async (req, res) => {
   try {
     const find = {
@@ -28,10 +29,9 @@ module.exports.detail = async (req, res) => {
     };
 
     const product = await Product.findOne(find);
-    console.log(product);
 
     if (!product) {
-      return res.redirect("/products");
+      return res.status(404).send("Không tìm thấy sản phẩm");
     }
 
     res.render("client/pages/products/detail", {
@@ -39,6 +39,7 @@ module.exports.detail = async (req, res) => {
       product: product,
     });
   } catch (error) {
-    res.redirect("/products");
+    console.error("DETAIL ERROR:", error);
+    res.status(500).send("Lỗi server khi tải chi tiết sản phẩm");
   }
 };
