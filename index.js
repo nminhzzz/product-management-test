@@ -19,7 +19,6 @@ app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded());
 
 const port = process.env.PORT;
-database.connect();
 
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
@@ -47,8 +46,11 @@ app.locals.prefixAdmin = systemConfig.prefixAdmin;
 // app.get("/products", async (req, res) => {
 //   res.render("client/pages/products/index");
 // });
-routeClient(app);
-routeAdmin(app);
+(async () => {
+  await database.connect();
+  routeClient(app);
+  routeAdmin(app);
+})();
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
