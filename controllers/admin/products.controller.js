@@ -117,28 +117,16 @@ module.exports.create = async (req, res) => {
 //[POST] /admin/products/create
 
 module.exports.createPost = async (req, res) => {
-  try {
-    req.body.price = parseInt(req.body.price);
-    req.body.discountPercentage = parseInt(req.body.discountPercentage);
-    req.body.stock = parseInt(req.body.stock);
-
-    if (req.body.position === "") {
-      req.body.position = (await Product.countDocuments()) + 1;
-    }
-
-    const product = new Product(req.body);
-    await product.save();
-
-    res.redirect(`/${prefixAdmin}/products`);
-  } catch (error) {
-    console.log("Lỗi khi thêm sản phẩm:", error);
-
-    // Có thể redirect lại form và báo lỗi
-    // req.flash("error", "Thêm sản phẩm thất bại!");
-    res.redirect("back");
+  req.body.price = parseInt(req.body.price);
+  req.body.discountPercentage = parseInt(req.body.discountPercentage);
+  req.body.stock = parseInt(req.body.stock);
+  if (req.body.position == "") {
+    req.body.position = (await Product.countDocuments()) + 1;
   }
+  const product = new Product(req.body);
+  await product.save();
+  res.redirect(`${prefixAdmin}/products`);
 };
-
 module.exports.detail = async (req, res) => {
   const find = {
     deleted: false,
