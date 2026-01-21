@@ -1,0 +1,63 @@
+extends ../../layouts/default.pug
+
+block main
+  .container.mt-4
+    .card.shadow
+      .row.no-gutters
+        .col-md-5.text-center.p-4
+          if product.thumbnail
+            img.img-fluid.rounded.mb-3(
+              src=product.thumbnail
+              alt=product.title
+              style="max-width: 300px"
+            )
+          else
+            img.img-fluid.rounded.mb-3(
+              src="https://via.placeholder.com/300x300?text=No+Image"
+            )
+
+          if product.status
+            if product.status === "active"
+              span.badge.badge-success.p-2 Hoạt động
+            else
+              span.badge.badge-danger.p-2 Dừng hoạt động
+
+        .col-md-7.p-4
+          if product.title
+            h2.mb-3 #{product.title}
+
+          if product.price
+            p.mb-2
+              strong Giá:
+              span.text-danger.ml-2 #{product.price}$
+
+          if product.discountPercentage
+            p.mb-2
+              strong Giảm giá:
+              span.text-success.ml-2 #{product.discountPercentage}%
+
+          if product.stock
+            p.mb-2
+              strong Còn lại:
+              span.ml-2 #{product.stock}
+
+          if product.position
+            p.mb-2
+              strong Vị trí:
+              span.ml-2 #{product.position}
+
+          if product.description
+            hr
+            p.text-muted #{product.description}
+
+          .mt-4
+            a.btn.btn-warning.btn-sm.mr-2(
+              href=`/admin/products/edit/${product._id}`
+              title="Sửa"
+            )
+              i.fas.fa-edit.mr-1
+              | Sửa
+
+            a.btn.btn-secondary.btn-sm(href="/products")
+              i.fas.fa-arrow-left.mr-1
+              | Quay lại
