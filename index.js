@@ -46,12 +46,15 @@ app.locals.prefixAdmin = systemConfig.prefixAdmin;
 // app.get("/products", async (req, res) => {
 //   res.render("client/pages/products/index");
 // });
-(async () => {
-  await database.connect();
-  routeClient(app);
-  routeAdmin(app);
-})();
 
+// (async () => {
+//   await database.connect();
+//   routeClient(app);
+//   routeAdmin(app);
+// })();
+database.connect();
+routeClient(app);
+routeAdmin(app);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
