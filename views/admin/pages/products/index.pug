@@ -93,7 +93,13 @@ block main
                     button-change-status
                     class="badge badge-secondary"
                   ) Dừng hoạt động
-              td.text-center.align-middle
+              td.text-center.align-middle.g-4
+                a(
+                    href=`${prefixAdmin}/products/detail/${item.id}`
+                    class="btn btn-secondary mr-1"
+                    title="Sửa"
+                  ) chi tiết
+                    
                 a(
                     href=`${prefixAdmin}/products/edit/${item.id}`
                     class="btn btn-warning btn-sm mr-1"

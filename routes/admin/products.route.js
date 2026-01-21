@@ -14,5 +14,6 @@ route.get("/create", controller.create);
 route.post("/create", upload.single("thumbnail"), controller.createPost);
 
 route.patch("/change-multi", controller.changeMulti);
+route.get("/detail/:id", controller.detail);
 
 module.exports = route;

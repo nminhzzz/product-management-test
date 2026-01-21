@@ -129,3 +129,14 @@ module.exports.createPost = async (req, res) => {
   await product.save();
   res.redirect(`${prefixAdmin}/products`);
 };
+module.exports.detail = async (req, res) => {
+  const find = {
+    deleted: false,
+    _id: req.params.id,
+  };
+  const product = await Product.findOne(find);
+  res.render("admin/pages/products/detail", {
+    pageTitle: "Trang chi tiết sản phẩm",
+    product: product,
+  });
+};
