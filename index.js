@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 
 const session = require("express-session");
 
@@ -36,6 +37,12 @@ app.use(
   })
 );
 app.use(flash());
+//tiny MCE
+app.use(
+  "/tinymce",
+  express.static(path.join(__dirname, "node_modules", "tinymce"))
+);
+//end tiny MCE
 
 // App local variable
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
