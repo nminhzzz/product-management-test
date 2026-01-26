@@ -70,3 +70,43 @@ if (showAlert) {
   }, time);
 }
 //End Show alert
+
+//sort
+const sort = document.querySelector("[sort]");
+if (sort) {
+  const select = sort.querySelector("[sort-select");
+  const url = new URL(window.location.href);
+  select.addEventListener("change", () => {
+    const [sortKey, sortValue] = select.value.split("-");
+    if (sortKey && sortValue) {
+      url.searchParams.set("sortKey", sortKey);
+      url.searchParams.set("sortValue", sortValue);
+    } else {
+      url.searchParams.delete("sortKey");
+      url.searchParams.delete("sortValue");
+    }
+    window.location.href = url.href;
+  });
+
+  //thêm select khi load
+  const defaultSortKey = url.searchParams.get("sortKey");
+  const defaultSortValue = url.searchParams.get("sortValue");
+  if (defaultSortKey && defaultSortValue) {
+    const optionSelected = document.querySelector(
+      `option[value=${defaultSortKey}-${defaultSortValue}]`
+    );
+    if (optionSelected) {
+      optionSelected.selected = true;
+    }
+  }
+  //xử lý clear
+  const clear = sort.querySelector("[sort-clear]");
+  if (clear) {
+    clear.addEventListener("click", () => {
+      url.searchParams.delete("sortKey");
+      url.searchParams.delete("sortValue");
+      window.location.href = url.href;
+    });
+  }
+}
+//end sort
