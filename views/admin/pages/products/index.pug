@@ -5,6 +5,8 @@ include ../../mixins/filter-status
 include ../../mixins/search
 include ../../mixins/form-change-multi
 include ../../mixins/alert
+include ../../mixins/sort
+
 
 
 
@@ -24,11 +26,11 @@ block main
     .card-body
       .row
         .col-5
-          div(sort)
-            select(
-              class="form-control"
+          div(sort class="d-flex align-items-center")
+            select.form-control.mr-2(
               name="sort"
               sort-select
+              style="max-width: 200px"
             )
               option(value="position-desc") Vị trí giảm dần
               option(value="position-asc") Vị trí tăng dần
@@ -37,9 +39,9 @@ block main
               option(value="title-asc") Tiêu đề A - Z
               option(value="title-desc") Tiêu đề Z - A
 
-            button(
-              class="btn btn-danger mt-2"
+            button.btn.btn-danger(
               sort-clear
+              type="button"
             ) Clear
 
   .card.mb-3
@@ -149,5 +151,4 @@ block main
     method="POST"
     data-path=`${prefixAdmin}/products/delete`
   )
-  script(src="/admin/js/product.js")
 
