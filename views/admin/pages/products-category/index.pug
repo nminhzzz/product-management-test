@@ -10,6 +10,86 @@ block main
         .col-8
         .col-4.text-right
           a(
-            href=`/${prefixAdmin}/products-category/create`
+            href=`${prefixAdmin}/products-category/create`
             class="btn btn-outline-success"
           ) + Thêm mới
+    table(
+        class="table table-hover table-sm"
+        checkbox-multi
+      )
+        thead
+          tr
+            th.text-center
+              input(type="checkbox" name="checkAll")
+            th.text-center STT
+            th.text-center Hình ảnh
+            th Tiêu đề
+            th.text-center Vị trí
+            th.text-center Trạng thái
+            th.text-center Hành động
+
+        tbody
+          each item, index in records
+            tr
+              td.text-center.align-middle
+                input(type="checkbox" name="id" value=item._id)
+              td.text-center.align-middle #{index + 1}
+              td.text-center.align-middle
+                img(
+                  src=item.thumbnail
+                  alt=item.title
+                  width="80px"
+                  height="auto"
+                  class="img-thumbnail"
+                )
+              td.align-middle
+                h6.mb-0 #{item.title}
+              
+              td.text-center.align-middle
+                input(
+                  type="number"
+                  value=item.position
+                  style="width: 60px"
+                  min="1"
+                  name="position"
+                  class="form-control form-control-sm d-inline-block text-center"
+                )
+              td.text-center.align-middle
+                if item.status == "active"
+                  a(
+                    href="javascript:;"
+                    data-status=item.status
+                    data-id=item.id
+                    button-change-status
+                    class="badge badge-success"
+                  ) Hoạt động
+                else
+                  a(
+                    href="javascript:;"
+                    data-status=item.status
+                    data-id=item.id
+                    button-change-status
+                    class="badge badge-secondary"
+                  ) Dừng hoạt động
+              td.text-center.align-middle.g-4
+                a(
+                    href=`${prefixAdmin}/products/detail/${item.id}`
+                    class="btn btn-secondary mr-1"
+                    title="Sửa"
+                  ) chi tiết
+                    
+                a(
+                    href=`${prefixAdmin}/products/edit/${item.id}`
+                    class="btn btn-warning btn-sm mr-1"
+                    title="Sửa"
+                  )
+                    i.fas.fa-edit
+                button(
+                  class="btn btn-danger btn-sm"
+                  button-delete
+                  data-id=item.id
+                  title="Xóa"
+                )
+                  i.fas.fa-trash
+
+//-   +pagination(pagination)
