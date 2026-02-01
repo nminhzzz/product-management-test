@@ -3,6 +3,7 @@ const ProductCategory = require("../../models/products-category.model");
 const filterStatusHelper = require("../../helpers/filterStatus");
 const objectSearchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
+const createTreeHelper = require("../../helpers/createTree");
 module.exports.index = async (req, res) => {
   const filterStatus = filterStatusHelper(req.query);
 
@@ -47,8 +48,17 @@ module.exports.index = async (req, res) => {
     pagination: objectPagination,
   });
 };
-module.exports.create = (req, res) => {
-  res.render("admin/pages/products-category/create");
+module.exports.create = async (req, res) => {
+  let find = {
+    deleted: false,
+  };
+
+  const records = await ProductCategory.find(find);
+  const newRecords = createTreeHelper.createTree(records);
+  console.log(newRecords);
+  res.render("admin/pages/products-category/create", {
+    records: newRecords,
+  });
 };
 
 module.exports.createPost = async (req, res) => {
