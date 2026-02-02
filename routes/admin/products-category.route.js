@@ -17,5 +17,12 @@ route.post(
 );
 route.patch("/change-multi", controller.changeMulti);
 route.patch("/change-status/:status/:id", controller.changeStatus);
+route.get("/edit/:id", controller.edit);
+route.patch(
+  "/edit/:id",
+  upload.single("thumbnail"),
+  uploadCloud.upload,
+  controller.editPatch
+);
 
 module.exports = route;
