@@ -3,6 +3,8 @@ extends ../../layouts/default.pug
 block main
     if product.title
         h1.mb-4 #{product.title}
+    if product.product_category_id
+        .mb-4 #{product.product_category_id}
 
     if product.price
         .mb-4 Giá: b #{product.price}$

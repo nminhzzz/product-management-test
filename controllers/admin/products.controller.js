@@ -4,6 +4,9 @@ const objectSearchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
 const Product = require("../../models/product.model");
 const { prefixAdmin } = require("../../config/system");
+const ProductCategory = require("../../models/products-category.model");
+const createTreeHelper = require("../../helpers/createTree");
+
 //[GET] /admin/products
 module.exports.products = async (req, res) => {
   //bộ lọc
@@ -118,8 +121,11 @@ module.exports.delete = async (req, res) => {
 //[GET] /admin/products/create
 
 module.exports.create = async (req, res) => {
+  const productCategory = await ProductCategory.find();
+  const records = createTreeHelper.createTree(productCategory);
   res.render("admin/pages/products/create", {
     pageTitle: "Trang danh tạo  sản phẩm",
+    productCategory: records,
   });
 };
 //[POST] /admin/products/create
@@ -131,6 +137,7 @@ module.exports.createPost = async (req, res) => {
   if (req.body.position == "") {
     req.body.position = (await Product.countDocuments()) + 1;
   }
+  console.log(req.body);
   const product = new Product(req.body);
   await product.save();
   res.redirect(`${prefixAdmin}/products`);
@@ -156,11 +163,14 @@ module.exports.edit = async (req, res) => {
       _id: id,
       deleted: false,
     });
+    const productCategory = await ProductCategory.find();
+    const records = createTreeHelper.createTree(productCategory);
 
     if (product) {
       res.render("admin/pages/products/edit", {
         pageTitle: "Chỉnh sửa sản phẩm",
         product: product,
+        productCategory: records,
       });
     } else {
       res.redirect(`${prefixAdmin}/products`);

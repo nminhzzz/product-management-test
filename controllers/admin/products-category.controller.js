@@ -180,3 +180,14 @@ module.exports.editPatch = async (req, res) => {
   }
   res.redirect(`${prefixAdmin}/products-category`);
 };
+module.exports.detail = async (req, res) => {
+  console.log(req.params.id);
+  const productCategory = await ProductCategory.findOne({
+    _id: req.params.id,
+    deleted: false,
+  });
+  console.log(productCategory);
+  res.render(`admin/pages/products-category/detail`, {
+    productCategory: productCategory,
+  });
+};

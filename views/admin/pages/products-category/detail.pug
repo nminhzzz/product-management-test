@@ -1,0 +1,36 @@
+extends ../../layouts/default.pug
+
+block main
+    if productCategory.title
+        h1.mb-4 #{productCategory.title}
+    
+    if productCategory.parent_id
+        .mb-4 #{productCategory.parent_id}
+
+    
+    if productCategory.thumbnail
+        .mb-4
+            img(
+            src=productCategory.thumbnail
+            style="width: 100px"
+            )
+
+    if productCategory.status
+        .mb-4
+            span Trạng thái:
+            if productCategory.status === "active"
+            span.badge.badge-success Hoạt động
+    else
+        .mb-4
+            span.badge.badge-danger Dừng hoạt động
+
+    if productCategory.position
+        .mb-4 Vị trí: b #{productCategory.position}
+
+    if productCategory.description
+        .mb-4 !{productCategory.description}
+    a(
+        href=`${prefixAdmin}/products-category/edit/${productCategory.id}`
+        class="btn btn-warning btn-sm mr-1"
+        title="Sửa"
+        ) chỉnh sửa 
