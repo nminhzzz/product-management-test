@@ -1,5 +1,6 @@
 const Role = require("../../models/role.model");
 const { prefixAdmin } = require("../../config/system");
+const { json } = require("body-parser");
 
 module.exports.index = async (req, res) => {
   const find = {
@@ -47,4 +48,28 @@ module.exports.editPatch = async (req, res) => {
     req.flash("error", "Cập nhật nhóm quyền thất bại!");
   }
   res.redirect("back");
+};
+
+module.exports.permission = async (req, res) => {
+  const find = {
+    deleted: false,
+  };
+  const roles = await Role.find(find);
+  res.render("admin/pages/roles/permission", {
+    pageTitle: "Phân quyền",
+    records: roles,
+  });
+};
+module.exports.permissionPatch = async (req, res) => {
+  try {
+    const permission = JSON.parse(req.body.permissions);
+    console.log(permission);
+    for (const item of permission) {
+      await Role.updateOne({ _id: item.id }, { permissions: item.permissions });
+    }
+    req.flash("success", "cập nhật thành công");
+  } catch (error) {}
+  req.flash("error", "cập nhật thất bại");
+
+  res.redirect(`${prefixAdmin}/roles/permission`);
 };

@@ -7,5 +7,7 @@ route.get("/create", controller.create);
 route.post("/create", controller.createPost);
 route.get("/edit/:id", controller.edit);
 route.patch("/edit/:id", controller.editPatch);
+route.get("/permission", controller.permission);
+route.patch("/permission", controller.permissionPatch);
 
 module.exports = route;
