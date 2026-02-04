@@ -73,3 +73,18 @@ module.exports.permissionPatch = async (req, res) => {
 
   res.redirect(`${prefixAdmin}/roles/permission`);
 };
+module.exports.detail = async (req, res) => {
+  console.log(req.params.id);
+  const role = await Role.findOne({
+    _id: req.params.id,
+    deleted: false,
+  });
+  res.render(`admin/pages/roles/detail`, {
+    role: role,
+  });
+};
+module.exports.delete = async (req, res) => {
+  const id = req.params.id;
+  await Role.updateOne({ _id: id }, { deleted: true, deleteAt: new Date() });
+  res.redirect(req.get("Referer"));
+};

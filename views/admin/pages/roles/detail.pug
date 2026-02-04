@@ -1,0 +1,25 @@
+extends ../../layouts/default.pug
+
+block main
+  .role-detail.card.shadow-sm.p-4
+    if role.title
+      h1.role-title.mb-3 #{role.title}
+
+    if role.description
+      p.role-desc.mb-3
+        span.label Vị trí:
+        span.value #{role.description}
+
+    if role.permissions && role.permissions.length
+      .permissions.mb-4
+        span.label.mb-2 Quyền hạn:
+        .permission-list
+          each per in role.permissions
+            span.permission-badge #{per}
+
+    a.btn.btn-warning.btn-sm(
+      href=`${prefixAdmin}/roles/edit/${role.id}`
+      title="Sửa"
+    )
+      i.fas.fa-edit.mr-1
+      | Chỉnh sửa

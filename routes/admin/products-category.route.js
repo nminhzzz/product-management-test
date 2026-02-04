@@ -25,5 +25,6 @@ route.patch(
   controller.editPatch
 );
 route.get("/detail/:id", controller.detail);
+route.delete("/delete/:id", controller.delete);
 
 module.exports = route;

@@ -191,3 +191,11 @@ module.exports.detail = async (req, res) => {
     productCategory: productCategory,
   });
 };
+module.exports.delete = async (req, res) => {
+  const id = req.params.id;
+  await ProductCategory.updateOne(
+    { _id: id },
+    { deleted: true, deleteAt: new Date() }
+  );
+  res.redirect(req.get("Referer"));
+};

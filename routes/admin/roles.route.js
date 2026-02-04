@@ -9,5 +9,7 @@ route.get("/edit/:id", controller.edit);
 route.patch("/edit/:id", controller.editPatch);
 route.get("/permission", controller.permission);
 route.patch("/permission", controller.permissionPatch);
+route.get("/detail/:id", controller.detail);
+route.delete("/delete/:id", controller.delete);
 
 module.exports = route;
