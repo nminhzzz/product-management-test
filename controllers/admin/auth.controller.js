@@ -3,9 +3,13 @@ const { prefixAdmin } = require("../../config/system");
 const md5 = require("md5");
 
 module.exports.login = async (req, res) => {
-  res.render("admin/pages/auth/login", {
-    pageTitle: "Trang Đăng nhập",
-  });
+  if (req.cookies.token) {
+    res.redirect(`${prefixAdmin}/dashboard`);
+  } else {
+    res.render("admin/pages/auth/login", {
+      pageTitle: "Trang Đăng nhập",
+    });
+  }
 };
 module.exports.loginPost = async (req, res) => {
   const { email, password } = req.body;
@@ -32,4 +36,8 @@ module.exports.loginPost = async (req, res) => {
   res.cookie("token", user.token);
   req.flash("success", "Đăng nhập thành công");
   res.redirect(`${prefixAdmin}/dashboard`);
+};
+module.exports.logout = (req, res) => {
+  res.clearCookie("token");
+  res.redirect(`${prefixAdmin}/auth/login`);
 };

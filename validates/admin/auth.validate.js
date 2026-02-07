@@ -1,3 +1,5 @@
+const { prefixAdmin } = require("../../config/system");
+
 module.exports.loginPost = (req, res, next) => {
   if (!req.body.email) {
     req.flash("error", "Vui lòng nhập email!");
@@ -10,4 +12,8 @@ module.exports.loginPost = (req, res, next) => {
   }
 
   next();
+};
+module.exports.logout = (req, res) => {
+  res.clearCookie("token");
+  res.redirect(`${prefixAdmin}/auth/login`);
 };
