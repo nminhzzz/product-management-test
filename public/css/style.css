@@ -97,3 +97,10 @@
   border-radius: 8px;
 }
 /* End product-item */
+
+/* alert */
+.alert-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s;
+}

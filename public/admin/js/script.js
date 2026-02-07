@@ -60,15 +60,20 @@ if (buttonsPagination) {
 //Show alert
 const showAlert = document.querySelector("[show-alert]");
 if (showAlert) {
-  const time = showAlert.getAttribute("data-time");
+  const time = Number(showAlert.getAttribute("data-time")) || 3000;
   const closeAlert = showAlert.querySelector("[close-alert]");
-  closeAlert.addEventListener("click", () => {
-    showAlert.classList.add("alert-hidden");
-  });
+
+  if (closeAlert) {
+    closeAlert.addEventListener("click", () => {
+      showAlert.classList.add("alert-hidden");
+    });
+  }
+
   setTimeout(() => {
     showAlert.classList.add("alert-hidden");
   }, time);
 }
+
 //End Show alert
 
 //sort
@@ -93,7 +98,7 @@ if (sort) {
   const defaultSortValue = url.searchParams.get("sortValue");
   if (defaultSortKey && defaultSortValue) {
     const optionSelected = document.querySelector(
-      `option[value=${defaultSortKey}-${defaultSortValue}]`
+      `option[value=${defaultSortKey}-${defaultSortValue}]`,
     );
     if (optionSelected) {
       optionSelected.selected = true;
