@@ -52,3 +52,57 @@ module.exports.createPost = async (req, res) => {
     res.redirect(`${prefixAdmin}/accounts`);
   }
 };
+
+module.exports.edit = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const account = await Account.findOne({
+      _id: id,
+      deleted: false,
+    });
+    console.log(account);
+    const roles = await Role.find();
+    if (account) {
+      res.render("admin/pages/accounts/edit", {
+        pageTitle: "Chỉnh sửa sản phẩm",
+        account: account,
+        roles: roles,
+      });
+    } else {
+      res.redirect(`${prefixAdmin}/accounts`);
+    }
+  } catch (error) {
+    res.redirect(`${prefixAdmin}/accounts`);
+  }
+};
+
+module.exports.editPatch = async (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  // 1. Check email trùng (trừ chính nó)
+  const emailExists = await Account.findOne({
+    email: req.body.email,
+    deleted: false,
+    _id: { $ne: id },
+  });
+  console.log(req.body);
+
+  if (emailExists) {
+    req.flash("error", `Email ${email} đã tồn tại`);
+    return res.redirect(`${prefixAdmin}/accounts/edit/${id}`);
+  }
+
+  // 2. Xử lý password
+  if (req.body.password) {
+    req.body.password = md5(password);
+  } else {
+    delete req.body.password;
+  }
+
+  // 3. Update
+  await Account.updateOne({ _id: id }, req.body);
+
+  req.flash("success", "Cập nhật tài khoản thành công");
+  res.redirect(`${prefixAdmin}/accounts`);
+};
