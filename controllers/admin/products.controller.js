@@ -107,7 +107,10 @@ module.exports.changeMulti = async (req, res) => {
     case "delete-all":
       await Products.updateMany(
         { _id: { $in: ids } },
-        { deleted: true, deleteAt: new Date() },
+        {
+          deleted: true,
+          deletedBy: { account_id: res.locals.user.id, DeletedAt: new Date() },
+        },
       );
       break;
     case "change-position":
@@ -125,7 +128,10 @@ module.exports.delete = async (req, res) => {
   const id = req.params.id;
   await Products.updateOne(
     { _id: id },
-    { deleted: true, deleteAt: new Date() },
+    {
+      deleted: true,
+      deletedBy: { account_id: res.locals.user.id, DeletedAt: new Date() },
+    },
   );
   res.redirect(req.get("Referer"));
 };
