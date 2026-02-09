@@ -13,7 +13,3 @@ module.exports.loginPost = (req, res, next) => {
 
   next();
 };
-module.exports.logout = (req, res) => {
-  res.clearCookie("token");
-  res.redirect(`${prefixAdmin}/auth/login`);
-};

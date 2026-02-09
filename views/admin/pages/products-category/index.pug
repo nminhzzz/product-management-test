@@ -12,68 +12,70 @@ include ../../mixins/table-tree
 
 block main
   +alert-success(5000)
-  h1(class="mb-4") Danh mục sản phẩm
+  if role.permissions.includes("products-category_view")
+    h1(class="mb-4") Danh mục sản phẩm
 
-  .card.mb-3
-    .row.card-header
-        .col-5
-            div Danh sách
-        .col-7        
-            div(sort class="d-flex align-items-center")
-                select.form-control.mr-2(
-                name="sort"
-                sort-select
-                style="max-width: 200px"
-                )
-                    option(value="position-desc") Vị trí giảm dần
-                    option(value="position-asc") Vị trí tăng dần
-                    option(value="title-asc") Tiêu đề A - Z
-                    option(value="title-desc") Tiêu đề Z - A
+    .card.mb-3
+      .row.card-header
+          .col-5
+              div Danh sách
+          .col-7        
+              div(sort class="d-flex align-items-center")
+                  select.form-control.mr-2(
+                  name="sort"
+                  sort-select
+                  style="max-width: 200px"
+                  )
+                      option(value="position-desc") Vị trí giảm dần
+                      option(value="position-asc") Vị trí tăng dần
+                      option(value="title-asc") Tiêu đề A - Z
+                      option(value="title-desc") Tiêu đề Z - A
 
-                button.btn.btn-danger(
-                sort-clear
-                type="button"
-                ) Clear
-    .card-body
-      .row
-        .col-5
-            +filter-status(filterStatus)
-        .col-4
-            +search(keyword)
-        .col-3.text-right
-          a(
-            href=`${prefixAdmin}/products-category/create`
-            class="btn btn-outline-success"
-          ) + Thêm mới
-    +form-change-multi(`${prefixAdmin}/products-category/change-multi?_method=PATCH`)
-    table(
-        class="table table-hover table-sm"
-        checkbox-multi
+                  button.btn.btn-danger(
+                  sort-clear
+                  type="button"
+                  ) Clear
+      .card-body
+        .row
+          .col-5
+              +filter-status(filterStatus)
+          .col-4
+              +search(keyword)
+          .col-3.text-right
+            if role.permissions.includes("products-category_create")
+              a(
+                href=`${prefixAdmin}/products-category/create`
+                class="btn btn-outline-success"
+              ) + Thêm mới
+      +form-change-multi(`${prefixAdmin}/products-category/change-multi?_method=PATCH`)
+      table(
+          class="table table-hover table-sm"
+          checkbox-multi
+        )
+          thead
+            tr
+              th.text-center
+                input(type="checkbox" name="checkAll")
+              th.text-center STT
+              th.text-center Hình ảnh
+              th Tiêu đề
+              th.text-center Vị trí
+              th.text-center Trạng thái
+              th.text-center Hành động
+
+          tbody
+            +table-tree(records)
+
+      +pagination(pagination)
+
+      form(
+          id="form-change-status"
+          method="POST"
+          data-path=`${prefixAdmin}/products-category/change-status`
       )
-        thead
-          tr
-            th.text-center
-              input(type="checkbox" name="checkAll")
-            th.text-center STT
-            th.text-center Hình ảnh
-            th Tiêu đề
-            th.text-center Vị trí
-            th.text-center Trạng thái
-            th.text-center Hành động
 
-        tbody
-          +table-tree(records)
-
-    +pagination(pagination)
-
-    form(
-        id="form-change-status"
-        method="POST"
-        data-path=`${prefixAdmin}/products-category/change-status`
-    )
-
-    form(
-        id="form-delete-item"
-        method="POST"
-        data-path=`${prefixAdmin}/products-category/delete`
-    )
+      form(
+          id="form-delete-item"
+          method="POST"
+          data-path=`${prefixAdmin}/products-category/delete`
+      )
