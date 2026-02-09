@@ -5,6 +5,8 @@ include ../../mixins/filter-status
 include ../../mixins/search
 include ../../mixins/form-change-multi
 include ../../mixins/alert
+include ../../mixins/moment
+
 
 
 
@@ -71,6 +73,7 @@ block main
               th.text-center Giá
               th.text-center Vị trí
               th.text-center Trạng thái
+              th.text-center người tạo
               th.text-center Hành động
 
           tbody
@@ -118,6 +121,10 @@ block main
                         button-change-status
                         class="badge badge-secondary"
                       ) Dừng hoạt động
+                td.text-center.align-middle.g-4
+                  div #{item.accountFullName}
+                  div 
+                    +formatDateTime(item.createdBy.CreatedAt)
                 td.text-center.align-middle.g-4
                   a(
                       href=`${prefixAdmin}/products/detail/${item.id}`

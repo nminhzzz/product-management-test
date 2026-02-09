@@ -6,6 +6,7 @@ const Product = require("../../models/product.model");
 const { prefixAdmin } = require("../../config/system");
 const ProductCategory = require("../../models/products-category.model");
 const createTreeHelper = require("../../helpers/createTree");
+const Account = require("../../models/account.model");
 
 //[GET] /admin/products
 module.exports.products = async (req, res) => {
@@ -35,7 +36,7 @@ module.exports.products = async (req, res) => {
   objectPagination = paginationHelper(
     objectPagination,
     req.query,
-    countProducts
+    countProducts,
   );
 
   //end pagination
@@ -52,6 +53,16 @@ module.exports.products = async (req, res) => {
     .sort(sort)
     .limit(objectPagination.limitItems)
     .skip(objectPagination.skip);
+
+  for (const product of products) {
+    const user = await Account.findOne({
+      _id: product.createdBy.account_id,
+    });
+
+    if (user) {
+      product.accountFullName = user.fullName;
+    }
+  }
 
   res.render("admin/pages/products/index", {
     pageTitle: "Trang danh sách sản phẩmmm",
@@ -82,7 +93,7 @@ module.exports.changeMulti = async (req, res) => {
       await Products.updateMany({ _id: { $in: ids } }, { status: "active" });
       req.flash(
         "success",
-        `Thay đổi trạng thái ${ids.length} sản phẩm thái thành công`
+        `Thay đổi trạng thái ${ids.length} sản phẩm thái thành công`,
       );
 
       break;
@@ -90,13 +101,13 @@ module.exports.changeMulti = async (req, res) => {
       await Products.updateMany({ _id: { $in: ids } }, { status: "inactive" });
       req.flash(
         "success",
-        `Thay đổi trạng thái ${ids.length} sản phẩm thái thành công`
+        `Thay đổi trạng thái ${ids.length} sản phẩm thái thành công`,
       );
       break;
     case "delete-all":
       await Products.updateMany(
         { _id: { $in: ids } },
-        { deleted: true, deleteAt: new Date() }
+        { deleted: true, deleteAt: new Date() },
       );
       break;
     case "change-position":
@@ -114,7 +125,7 @@ module.exports.delete = async (req, res) => {
   const id = req.params.id;
   await Products.updateOne(
     { _id: id },
-    { deleted: true, deleteAt: new Date() }
+    { deleted: true, deleteAt: new Date() },
   );
   res.redirect(req.get("Referer"));
 };
@@ -137,9 +148,11 @@ module.exports.createPost = async (req, res) => {
   if (req.body.position == "") {
     req.body.position = (await Product.countDocuments()) + 1;
   }
-  console.log(req.body);
+
+  req.body.createdBy = { account_id: res.locals.user.id };
   const product = new Product(req.body);
   await product.save();
+
   res.redirect(`${prefixAdmin}/products`);
 };
 module.exports.detail = async (req, res) => {
@@ -205,7 +218,7 @@ module.exports.editPost = async (req, res) => {
         _id: id,
         deleted: false,
       },
-      req.body
+      req.body,
     );
 
     req.flash("success", "Cập nhật sản phẩm thành công!");

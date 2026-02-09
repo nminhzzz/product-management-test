@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const path = require("path");
-
+const moment = require("moment");
 const session = require("express-session");
 
 const flash = require("express-flash");
@@ -34,18 +34,19 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 60000 },
-  })
+  }),
 );
 app.use(flash());
 //tiny MCE
 app.use(
   "/tinymce",
-  express.static(path.join(__dirname, "node_modules", "tinymce"))
+  express.static(path.join(__dirname, "node_modules", "tinymce")),
 );
 //end tiny MCE
 
 // App local variable
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
+app.locals.moment = require("moment");
 
 // app.get("/", (req, res) => {
 //   res.render("client/pages/home/index");
