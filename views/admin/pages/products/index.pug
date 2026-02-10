@@ -74,6 +74,7 @@ block main
               th.text-center Vị trí
               th.text-center Trạng thái
               th.text-center người tạo
+              th.text-center người cập nhật
               th.text-center Hành động
 
           tbody
@@ -125,6 +126,13 @@ block main
                   div #{item.accountFullName}
                   div 
                     +formatDateTime(item.createdBy.CreatedAt)
+                td
+                  - const updatedBy = item.updatedBy.slice(-1)[0];
+                  if(updatedBy)
+                    p #{updatedBy.accountFullName}
+                    p
+                      +formatDate(updatedBy.updatedAt)
+
                 td.text-center.align-middle.g-4
                   a(
                       href=`${prefixAdmin}/products/detail/${item.id}`
