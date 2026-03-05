@@ -72,7 +72,6 @@ module.exports.products = async (req, res) => {
       });
       updatedBy.accountFullName = userUpdated.fullName;
     }
-    console.log(product);
   }
 
   res.render("admin/pages/products/index", {
@@ -233,7 +232,6 @@ module.exports.edit = async (req, res) => {
 module.exports.editPost = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(id);
 
     if (req.file && req.file.filename) {
       req.body.thumbnail = `/uploads/${req.file.filename}`;

@@ -1,0 +1,144 @@
+extends ../../layouts/default.pug
+include ../../mixins/filter-status
+include ../../mixins/search
+include ../../mixins/pagination
+include ../../mixins/form-change-multi
+include ../../mixins/alert
+include ../../mixins/table-tree
+
+
+
+
+
+block main
+  +alert-success(5000)
+  if role.permissions.includes("articles-category_view")
+    h1(class="mb-4") Danh mục bài viết
+
+    .card.mb-3
+      .row.card-header
+          .col-5
+              div Danh sách
+          .col-7        
+              div(sort class="d-flex align-items-center")
+                  select.form-control.mr-2(
+                  name="sort"
+                  sort-select
+                  style="max-width: 200px"
+                  )
+                      option(value="position-desc") Vị trí giảm dần
+                      option(value="position-asc") Vị trí tăng dần
+                      option(value="title-asc") Tiêu đề A - Z
+                      option(value="title-desc") Tiêu đề Z - A
+
+                  button.btn.btn-danger(
+                  sort-clear
+                  type="button"
+                  ) Clear
+      .card-body
+        .row
+          .col-5
+              +filter-status(filterStatus)
+          .col-4
+              +search(keyword)
+          .col-3.text-right
+            if role.permissions.includes("articles-category_create")
+              a(
+                href=`${prefixAdmin}/articles-category/create`
+                class="btn btn-outline-success"
+              ) + Thêm mới
+      +form-change-multi(`${prefixAdmin}/articles-category/change-multi?_method=PATCH`)
+      table(
+          class="table table-hover table-sm"
+          checkbox-multi
+        )
+          thead
+            tr
+              th.text-center
+                input(type="checkbox" name="checkAll")
+              th.text-center STT
+              th.text-center Hình ảnh
+              th Tiêu đề
+              th.text-center Vị trí
+              th.text-center Trạng thái
+              th.text-center Hành động
+
+          tbody
+            each item, index in records
+              tr
+                td.text-center.align-middle
+                  input(type="checkbox" name="id" value=item._id)
+                td.text-center.align-middle #{index + 1}
+                td.text-center.align-middle
+                  img(
+                    src=item.thumbnail
+                    alt=item.title
+                    width="80px"
+                    height="auto"
+                    class="img-thumbnail"
+                  )
+                td.align-middle
+                  h6.mb-0 #{item.title}
+                
+                td.text-center.align-middle
+                  input(
+                    type="number"
+                    value=item.position
+                    style="width: 60px"
+                    min="1"
+                    name="position"
+                    class="form-control form-control-sm d-inline-block text-center"
+                  )
+                td.text-center.align-middle
+                  if role.permissions.includes("articles-category_edit")
+                    if item.status == "active"
+                      a(
+                        href="javascript:;"
+                        data-status=item.status
+                        data-id=item.id
+                        button-change-status
+                        class="badge badge-success"
+                      ) Hoạt động
+                    else
+                      a(
+                        href="javascript:;"
+                        data-status=item.status
+                        data-id=item.id
+                        button-change-status
+                        class="badge badge-secondary"
+                      ) Dừng hoạt động
+                td.text-center.align-middle.g-4
+                  a(
+                      href=`${prefixAdmin}/articles-category/detail/${item.id}`
+                      class="btn btn-secondary mr-1"
+                      title="Sửa"
+                    ) chi tiết
+                  if role.permissions.includes("articles-category_edit")    
+                    a(
+                        href=`${prefixAdmin}/articles-category/edit/${item.id}`
+                        class="btn btn-warning btn-sm mr-1"
+                        title="Sửa"
+                      )
+                        i.fas.fa-edit
+                  if role.permissions.includes("articles-category_delete")
+                    button(
+                      class="btn btn-danger btn-sm"
+                      button-delete
+                      data-id=item.id
+                      title="Xóa"
+                    )
+                      i.fas.fa-trash
+
+      +pagination(pagination)
+
+      form(
+          id="form-change-status"
+          method="POST"
+          data-path=`${prefixAdmin}/articles-category/change-status`
+      )
+
+      form(
+          id="form-delete-item"
+          method="POST"
+          data-path=`${prefixAdmin}/articles-category/delete`
+      )
