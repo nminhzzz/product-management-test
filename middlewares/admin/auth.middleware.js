@@ -28,3 +28,17 @@ module.exports.requireAuth = async (req, res, next) => {
     next();
   }
 };
+
+module.exports.requirePermission = (permission) => {
+  return (req, res, next) => {
+    if (
+      res.locals.role &&
+      res.locals.role.permissions &&
+      res.locals.role.permissions.includes(permission)
+    ) {
+      next();
+    } else {
+      res.send("403");
+    }
+  };
+};
