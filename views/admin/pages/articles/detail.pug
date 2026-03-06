@@ -1,0 +1,34 @@
+extends ../../layouts/default.pug
+
+block main
+    if article.title
+        h1.mb-4 #{article.title}
+    if article.article_category_id
+        .mb-4 Danh mục: #{article.article_category_id}
+
+    if article.thumbnail
+        .mb-4
+            img(
+            src=article.thumbnail
+            style="width: 100px"
+            )
+
+    if article.status
+        .mb-4
+            span Trạng thái:
+            if article.status === "active"
+                span.badge.badge-success Hoạt động
+            else
+                span.badge.badge-danger Dừng hoạt động
+
+    if article.position
+        .mb-4 Vị trí: b #{article.position}
+
+    if article.description
+        .mb-4 !{article.description}
+    
+    a(
+        href=`${prefixAdmin}/articles/edit/${article.id}`
+        class="btn btn-warning btn-sm mr-1"
+        title="Sửa"
+        ) Chỉnh sửa 

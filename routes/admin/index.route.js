@@ -24,8 +24,8 @@ module.exports = (app) => {
   );
   app.use(PATH_ADMIN + "/roles", authMiddleware.requireAuth, roleRoute);
   app.use(PATH_ADMIN + "/accounts", authMiddleware.requireAuth, accountRoute);
-  app.use(PATH_ADMIN + "/auth", authMiddleware.requireAuth, authRoute);
-  app.use(PATH_ADMIN + "/articles", articlesRoute);
+  app.use(PATH_ADMIN + "/auth", authRoute);
+  app.use(PATH_ADMIN + "/articles", authMiddleware.requireAuth, articlesRoute);
   app.use(
     PATH_ADMIN + "/articles-category",
     authMiddleware.requireAuth,
