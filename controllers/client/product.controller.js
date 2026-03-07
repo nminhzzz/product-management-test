@@ -1,4 +1,6 @@
 const Product = require("../../models/product.model");
+const ProductCategory = require("../../models/products-category.model");
+const ProductCategoryHelper = require("../../helpers/productCategory");
 module.exports.index = async (req, res) => {
   try {
     const products = await Product.find({
@@ -39,6 +41,26 @@ module.exports.detail = async (req, res) => {
       pageTitle: product.title,
       product: product,
     });
+  } catch (error) {
+    res.redirect("/products");
+  }
+};
+module.exports.category = async (req, res) => {
+  try {
+    const category = await ProductCategory.findOne({
+      slug: req.params.slugCategory,
+    });
+
+    const subCategory = await ProductCategoryHelper.getSubCategory(category.id);
+    const subCategoryId = subCategory.map((item) => item.id);
+
+    const categoryIds = [category.id, ...subCategoryId];
+
+    const products = await Product.find({
+      product_category_id: { $in: categoryIds },
+    });
+
+    res.render("client/pages/products/index", { products: products });
   } catch (error) {
     res.redirect("/products");
   }
