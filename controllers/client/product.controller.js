@@ -1,6 +1,7 @@
 const Product = require("../../models/product.model");
 const ProductCategory = require("../../models/products-category.model");
 const ProductCategoryHelper = require("../../helpers/productCategory");
+const ProductPriceHelper = require("../../helpers/productPrice");
 module.exports.index = async (req, res) => {
   try {
     const products = await Product.find({
@@ -26,7 +27,7 @@ module.exports.detail = async (req, res) => {
   try {
     const find = {
       deleted: false,
-      slug: req.params.slug,
+      slug: req.params.slugProduct,
       status: "active",
     };
 
@@ -36,10 +37,10 @@ module.exports.detail = async (req, res) => {
     if (!product) {
       return res.redirect("/products");
     }
-
+    const newProduct = ProductPriceHelper.priceNewOneProduct(product);
     res.render("client/pages/products/detail", {
       pageTitle: product.title,
-      product: product,
+      product: newProduct,
     });
   } catch (error) {
     res.redirect("/products");
