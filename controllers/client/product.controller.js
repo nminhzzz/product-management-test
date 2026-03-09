@@ -32,7 +32,6 @@ module.exports.detail = async (req, res) => {
     };
 
     const product = await Product.findOne(find);
-    console.log(product);
 
     if (!product) {
       return res.redirect("/products");

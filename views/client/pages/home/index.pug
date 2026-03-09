@@ -1,9 +1,12 @@
 extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
 include ../../mixins/products-layout.pug
+include ../../mixins/alert.pug
 
 
 block main
+
+  +alert-success(5000)
   h1.text-center.my-5 Trang Chủ
 
   // Sản phẩm nổi bật
