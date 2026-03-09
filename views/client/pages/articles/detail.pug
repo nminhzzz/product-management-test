@@ -1,0 +1,20 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+  .article-detail
+    .container.my-5
+      .row.justify-content-center
+        .col-lg-8
+
+          if (article.category)
+            .article-category
+              a(href=`/articles/${article.category.slug}`) #{article.category.title}
+
+          h1.article-title #{article.title}
+
+          .article-thumb.mb-4
+            img.img-fluid(src=article.thumbnail, alt=article.title)
+
+          .article-content
+                != article.description

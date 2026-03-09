@@ -1,0 +1,14 @@
+mixin article-item(articles)
+  .row
+    each item in articles
+      .col-lg-4.col-md-6.mb-4
+        .article-card
+          .article-image
+            a(href=`/articles/detail/${item.slug}`)
+              img.img-fluid(src=item.thumbnail, alt=item.title)
+
+          .article-content
+            h3.article-title
+              a(href=`/articles/detail/${item.slug}`) #{item.title}
+
+            .article-description !{item.description}
