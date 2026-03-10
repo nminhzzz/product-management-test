@@ -41,15 +41,15 @@ block main
                       name="quantity"
                       value=product.quantity
                       min="1"
-                      product-id=product.productId
+                      product-id=product.product_id
                       style="width: 60px"
                     )
                   td #{product.totalPrice}$
                   td
                     a(
-                      href=`/cart/delete/${product.productId}`
+                      href=`/cart/delete/${product.product_id}`
                       class="btn btn-danger"
-                    ) Xóa
+                    ) Xóa 
             else
               p Chưa có sản phẩm nào trong giỏ hàng.
 
