@@ -1,4 +1,4 @@
-const Cart = require("../../models/cart.module");
+const Cart = require("../../models/cart.model");
 
 module.exports.cartId = async (req, res, next) => {
   if (!req.cookies.cartId) {
@@ -9,6 +9,11 @@ module.exports.cartId = async (req, res, next) => {
       expires: new Date(Date.now() + time),
     });
   } else {
+    const cart = await Cart.findOne({ _id: req.cookies.cartId });
+    cart.totalQuantity = cart.products.reduce((sum, item) => {
+      return sum + item.quantity;
+    }, 0);
+    res.locals.miniCart = cart;
   }
   next();
 };

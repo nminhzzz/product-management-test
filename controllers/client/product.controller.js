@@ -31,15 +31,15 @@ module.exports.detail = async (req, res) => {
       status: "active",
     };
 
-    const product = await Product.findOne(find);
+    let product = await Product.findOne(find);
 
     if (!product) {
       return res.redirect("/products");
     }
-    const newProduct = ProductPriceHelper.priceNewOneProduct(product);
+    product.priceNew = ProductPriceHelper.priceNewOneProduct(product);
     res.render("client/pages/products/detail", {
       pageTitle: product.title,
-      product: newProduct,
+      product: product,
     });
   } catch (error) {
     res.redirect("/products");

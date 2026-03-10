@@ -40,3 +40,5 @@ header.header
               a(href="/articles") Bài viết
               if(layoutArticlesCategory)
                 +sub-menu-article(layoutArticlesCategory)
+            li 
+              a(href="/cart") Giỏ hàng (#{miniCart.totalQuantity})
