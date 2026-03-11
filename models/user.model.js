@@ -11,11 +11,13 @@ const UserSchema = new mongoose.Schema(
     },
     phone: String,
     avatar: String,
-    role_id: String,
-    status: String,
-    deleted: {
+    status: {
       type: String,
       default: "active",
+    },
+    deleted: {
+      type: Boolean,
+      default: false,
     },
     deleteAt: Date,
   },

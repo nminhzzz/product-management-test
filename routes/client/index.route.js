@@ -8,6 +8,7 @@ const articleRoute = require("./articles.route");
 const searchRoute = require("./search.route.js");
 const cartRoute = require("./cart.route.js");
 const checkoutRoute = require("./checkout.route.js");
+const userRoute = require("./user.route.js");
 
 module.exports = (app) => {
   app.use(
@@ -21,4 +22,5 @@ module.exports = (app) => {
   app.use("/search", searchRoute);
   app.use("/cart", cartRoute);
   app.use("/checkout", checkoutRoute);
+  app.use("/user", userRoute);
 };
