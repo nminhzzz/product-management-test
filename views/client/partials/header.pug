@@ -42,8 +42,12 @@ header.header
                 +sub-menu-article(layoutArticlesCategory)
             li 
               a(href="/cart") Giỏ hàng (#{miniCart.totalQuantity})
-            li 
-              a(href="/user/register") Đăng kí
-            li 
-              a(href="/user/login") Đăng nhập
+            if(user)
+              li 
+                a(href="/user/logout") Đăng xuất
+            else
+              li 
+                a(href="/user/register") Đăng kí
+              li 
+                a(href="/user/login") Đăng nhập
               
