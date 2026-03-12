@@ -91,5 +91,76 @@ module.exports.forgotPasswordPost = async (req, res) => {
 
   // nếu tồn tại email thì gửi mã OTP qua email
 
-  res.send("ok");
+  res.redirect(`/user/password/otp?email=${email}`);
+};
+module.exports.otpPassword = async (req, res) => {
+  const email = req.query.email;
+
+  res.render("client/pages/user/otp-password", {
+    pageTitle: "Xác thực OTP",
+    email: email,
+  });
+};
+
+// [POST] /user/password/otp
+module.exports.otpPasswordPost = async (req, res) => {
+  const email = req.body.email;
+  const otp = req.body.otp;
+
+  const result = await ForgotPassword.findOne({
+    email: email,
+    otp: otp,
+  });
+
+  if (!result) {
+    req.flash("error", "OTP không hợp lệ!");
+    res.redirect(`/user/password/otp?email=${email}`);
+    return;
+  }
+
+  const user = await User.findOne({
+    email: email,
+  });
+
+  res.cookie("tokenUser", user.tokenUser);
+
+  res.redirect("/user/password/reset");
+};
+
+// [GET] /user/password/reset
+module.exports.resetPassword = async (req, res) => {
+  res.render("client/pages/user/reset-password", {
+    pageTitle: "Đổi mật khẩu mới",
+  });
+};
+module.exports.resetPasswordPost = async (req, res) => {
+  const password = req.body.password;
+  const confirmPassword = req.body.confirmPassword;
+
+  // kiểm tra nhập lại mật khẩu
+  if (password !== confirmPassword) {
+    req.flash("error", "Mật khẩu nhập lại không khớp!");
+    return res.redirect("back");
+  }
+
+  const tokenUser = req.cookies.tokenUser;
+
+  const user = await User.findOne({
+    tokenUser: tokenUser,
+    deleted: false,
+  });
+
+  if (!user) {
+    req.flash("error", "Người dùng không tồn tại!");
+    return res.redirect("/user/login");
+  }
+
+  // mã hóa password
+  const newPassword = md5(password);
+
+  await User.updateOne({ _id: user._id }, { password: newPassword });
+
+  req.flash("success", "Đổi mật khẩu thành công!");
+
+  res.redirect("/");
 };
