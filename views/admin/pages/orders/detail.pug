@@ -1,0 +1,80 @@
+extends ../../layouts/default
+include ../../mixins/moment
+
+block main
+  h1(class="mb-4") Chi tiết đơn hàng
+
+  if (order)
+    .row
+      .col-6
+        .card.mb-4
+          .card-header Thông tin khách hàng
+          .card-body
+            table.table.table-bordered
+              tbody
+                tr
+                  td Họ tên
+                  td 
+                    b #{order.userInfo.fullName}
+                tr
+                  td Số điện thoại
+                  td 
+                    b #{order.userInfo.phone}
+                tr
+                  td Địa chỉ
+                  td 
+                    b #{order.userInfo.address}
+                tr
+                  td Ngày đặt
+                  td 
+                    b
+                      +formatDateTime(order.createdAt)
+      
+      .col-6
+        .card.mb-4
+          .card-header Trạng thái đơn hàng
+          .card-body
+            if order.status == "initial"
+              span(class="badge badge-info") Chờ xác nhận
+            else if order.status == "confirmed"
+              span(class="badge badge-primary") Đã xác nhận
+            else if order.status == "shipping"
+              span(class="badge badge-warning") Đang giao hàng
+            else if order.status == "delivered"
+              span(class="badge badge-success") Đã giao hàng
+            else if order.status == "cancelled"
+              span(class="badge badge-danger") Đã hủy
+
+    .card.mb-4
+      .card-header Danh sách sản phẩm
+      .card-body
+        table.table.table-bordered
+          thead
+            tr
+              th STT
+              th Hình ảnh
+              th Tên sản phẩm
+              th Giá
+              th Số lượng
+              th Tổng tiền
+          tbody
+            each item, index in order.products
+              tr
+                td #{index + 1}
+                td
+                  if item.productInfo && item.productInfo.thumbnail
+                    img(src=item.productInfo.thumbnail, alt=item.productInfo.title, width="80px")
+                td 
+                  if item.productInfo
+                    a(href=`${prefixAdmin}/products/detail/${item.product_id}`) #{item.productInfo.title}
+                td #{item.priceAfterDiscount.toLocaleString()}đ
+                td #{item.quantity}
+                td #{item.totalPrice.toLocaleString()}đ
+          tfoot
+            tr
+              td(colspan="5" class="text-right")
+                b Tổng đơn hàng:
+              td
+                b(class="text-danger") #{order.totalPrice.toLocaleString()}đ
+
+    a(href=`${prefixAdmin}/orders` class="btn btn-secondary") Quay lại

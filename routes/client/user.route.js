@@ -2,6 +2,7 @@ const express = require("express");
 const route = express.Router();
 const userValidate = require("../../validates/client/user.validate");
 const controller = require("../../controllers/client/user.controller");
+const auth = require("../../middlewares/client/auth.middleware");
 route.get("/register", controller.register);
 route.post("/register", controller.registerPost);
 route.get("/login", controller.login);
@@ -19,5 +20,6 @@ route.post("/password/otp", controller.otpPasswordPost);
 
 route.get("/password/reset", controller.resetPassword);
 route.post("/password/reset", controller.resetPasswordPost);
+route.get("/info", auth.requireAuth, controller.info);
 
 module.exports = route;

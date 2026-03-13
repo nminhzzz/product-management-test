@@ -39,13 +39,13 @@ module.exports.loginPost = async (req, res) => {
 
   if (!user) {
     req.flash("error", "Email không tồn tại!");
-    res.redirect("back");
+    res.redirect("/user/login");
     return;
   }
 
   if (md5(req.body.password) != user.password) {
     req.flash("error", "Sai mật khẩu!");
-    res.redirect("back");
+    res.redirect("/user/login");
     return;
   }
 
@@ -167,4 +167,10 @@ module.exports.resetPasswordPost = async (req, res) => {
   req.flash("success", "Đổi mật khẩu thành công!");
 
   res.redirect("/");
+};
+
+module.exports.info = async (req, res) => {
+  const tokenUser = req.cookies.tokenUser;
+  const user = await User.findOne({ tokenUser: tokenUser }).select("-password");
+  res.render("client/pages/user/info", { user: user });
 };

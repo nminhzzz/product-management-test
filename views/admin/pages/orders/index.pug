@@ -1,0 +1,111 @@
+extends ../../layouts/default
+
+include ../../mixins/pagination
+include ../../mixins/filter-status
+include ../../mixins/search
+include ../../mixins/alert
+include ../../mixins/moment
+
+block main
+  +alert-success("5000")
+  +alert-error("5000")
+      
+  h1(class="mb-4") Quản lý đơn hàng
+
+  .card.mb-3
+    .card-header Bộ lọc và Tìm kiếm
+    .card-body
+      .row
+        .col-6
+          +filter-status(filterStatus)
+        .col-6
+          //- +search(keyword)
+
+  .card.mb-3
+    .card-header Danh sách đơn hàng
+    .card-body
+      table(
+        class="table table-hover table-sm"
+      )
+        thead
+          tr
+            th STT
+            th Khách hàng
+            th Số điện thoại
+            th Tổng tiền
+            th Trạng thái
+            th Ngày đặt
+            th Hành động
+
+        tbody
+          if(orders.length > 0)
+            each item, index in orders
+              tr
+                td #{index + 1}
+                td 
+                  b #{item.userInfo.fullName}
+                td #{item.userInfo.phone}
+                td #{item.totalPrice.toLocaleString()}đ
+                td
+                  if item.status == "initial"
+                    span(class="badge badge-info") Chờ xác nhận
+                  else if item.status == "confirmed"
+                    span(class="badge badge-primary") Đã xác nhận
+                  else if item.status == "shipping"
+                    span(class="badge badge-warning") Đang giao hàng
+                  else if item.status == "delivered"
+                    span(class="badge badge-success") Đã giao hàng
+                  else if item.status == "cancelled"
+                    span(class="badge badge-danger") Đã hủy
+                td
+                  +formatDateTime(item.createdAt)
+                td
+                  a(
+                    href=`${prefixAdmin}/orders/detail/${item.id}`
+                    class="btn btn-secondary btn-sm"
+                  ) Chi tiết
+                  
+                  div(class="dropdown d-inline-block ml-1")
+                    button(
+                      class="btn btn-warning btn-sm dropdown-toggle"
+                      type="button"
+                      id=`dropdownMenuButton-${item.id}`
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    ) Trạng thái
+                    div(class="dropdown-menu" aria-labelledby=`dropdownMenuButton-${item.id}`)
+                      a(class="dropdown-item" href="javascript:;" button-change-status data-id=item.id data-status="confirmed") Xác nhận
+                      a(class="dropdown-item" href="javascript:;" button-change-status data-id=item.id data-status="shipping") Giao hàng
+                      a(class="dropdown-item" href="javascript:;" button-change-status data-id=item.id data-status="delivered") Đã giao
+                      a(class="dropdown-item" href="javascript:;" button-change-status data-id=item.id data-status="cancelled") Hủy đơn
+
+          else
+            tr
+              td(colspan="7" class="text-center") Không có đơn hàng nào.
+
+  +pagination(pagination)
+
+  form(
+    id="form-change-status"
+    method="POST"
+    data-path=`${prefixAdmin}/orders/change-status`
+  )
+
+  script.
+    const buttonsChangeStatus = document.querySelectorAll("[button-change-status]");
+    if(buttonsChangeStatus.length > 0) {
+      const formChangeStatus = document.querySelector("#form-change-status");
+      const path = formChangeStatus.getAttribute("data-path");
+
+      buttonsChangeStatus.forEach(button => {
+        button.addEventListener("click", () => {
+          const status = button.getAttribute("data-status");
+          const id = button.getAttribute("data-id");
+
+          const action = `${path}/${status}/${id}?_method=PATCH`;
+          formChangeStatus.action = action;
+          formChangeStatus.submit();
+        });
+      });
+    }
