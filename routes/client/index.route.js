@@ -10,7 +10,7 @@ const searchRoute = require("./search.route.js");
 const cartRoute = require("./cart.route.js");
 const checkoutRoute = require("./checkout.route.js");
 const userRoute = require("./user.route.js");
-
+const chatRoute = require("./chat.route.js");
 module.exports = (app) => {
   app.use(
     categoryMiddleware.category,
@@ -25,4 +25,5 @@ module.exports = (app) => {
   app.use("/cart", cartRoute);
   app.use("/checkout", checkoutRoute);
   app.use("/user", userRoute);
+  app.use("/chat", chatRoute);
 };
