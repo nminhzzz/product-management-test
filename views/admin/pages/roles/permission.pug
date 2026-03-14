@@ -335,6 +335,19 @@ block main
                   
                   checked=(item.permissions.includes("orders_delete") ? true : false)
                 )
+          tr
+            td(colspan="4")
+              b Cài đặt chung
+          tr(data-name="settings_view")
+            td Xem
+            each item in records
+              td(class="text-center")
+                input(
+                  type="checkbox" 
+                  data-id=item.id 
+                  
+                  checked=(item.permissions.includes("settings_view") ? true : false)
+                )
     form.d-none(
       id="form-change-permissions"
       method="POST"

@@ -23,13 +23,16 @@
       if role.permissions.includes("accounts_view")
         li
           a(href=`${prefixAdmin}/accounts`) Danh sách tài khoản
-      if role.permissions.includes("accounts_view")
+      if role.permissions.includes("articles_view")
         li
           a(href=`${prefixAdmin}/articles`) Danh sách bài viết
-      if role.permissions.includes("accounts_view")
+      if role.permissions.includes("articles-category_view")
         li
           a(href=`${prefixAdmin}/articles-category`) Danh mục bài viết
       if role.permissions.includes("orders_view")
         li
           a(href=`${prefixAdmin}/orders`) Đơn Hàng 
+      if role.permissions.includes("settings_view")
+        li
+          a(href=`${prefixAdmin}/settings/general`) Cài đặt chung
 
