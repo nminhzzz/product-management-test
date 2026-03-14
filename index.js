@@ -63,6 +63,13 @@ app.locals.moment = require("moment");
 database.connect();
 routeClient(app);
 routeAdmin(app);
+// 404 phải đặt cuối cùng
+app.use((req, res) => {
+  res.status(404).render("client/pages/errors/404", {
+    pageTitle: "404 Not Found",
+  });
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
