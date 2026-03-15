@@ -4,17 +4,28 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const moment = require("moment");
 const session = require("express-session");
-
+const app = express();
 const flash = require("express-flash");
 
 const systemConfig = require("./config/system");
 var methodOverride = require("method-override");
 
 require("dotenv").config();
+
+const http = require("http");
+const { Server } = require("socket.io");
+//socket.oi
+const server = http.createServer(app);
+
+const io = new Server(server);
+io.on("connection", (socket) => {
+  console.log("User connected:", socket.id);
+});
+//end socket.io
 const database = require("./config/database");
 const routeAdmin = require("./routes/admin/index.route");
 const routeClient = require("./routes/client/index.route");
-const app = express();
+
 app.use(methodOverride("_method"));
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded());
@@ -70,6 +81,6 @@ app.use((req, res) => {
   });
 });
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
