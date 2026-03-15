@@ -42,7 +42,10 @@ header.header
                 +sub-menu-article(layoutArticlesCategory)
             li 
               a(href="/cart") Giỏ hàng (#{miniCart.totalQuantity})
+             
             if(user)
+              li 
+                a(href="/chat") Chat
               li 
                 a(href="/user/logout") Đăng xuất
               li 
